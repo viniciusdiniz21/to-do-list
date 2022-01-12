@@ -1,5 +1,7 @@
 const express = require('express');
-const checklistRouter = require('./src/routes/checklist')
+const checklistRouter = require('./src/routes/checklist');
+require('./config/database');
+
 const app = express();
 
 //use serve pra utilizar o middleware
