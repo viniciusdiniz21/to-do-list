@@ -6,9 +6,13 @@ const Checklist = require('../models/checklist')
 
 const Task = require('../models/task')
 
-router.get('/', (req, res) => {
-    console.log('Olá');
-    res.send;
+router.get('/', async (req, res) => {
+    try {
+        let checklist = await Checklist.find({})
+        res.status(200).json(checklist)
+    } catch (error) {
+        res.status(500).json(error)
+    }
 })
 
 router.post('/', async (req, res) => {
@@ -20,23 +24,35 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(422).json(error);
     }
-
-
 })
 
-router.get('/:id', (req, res) => {
-    console.log(req.params.id);
-    res.send(`ID: ${req.params.id}`);
+router.get('/:id', async (req, res) => {
+    try {
+        let checklist = await Checklist.findById(req.params.id)
+        res.status(200).json(checklist);
+    } catch (error) {
+        res.status(422).json(error)
+    }
 })
 
-router.put('/:id', (req, res) => {
-    console.log(req.params.id);
-    res.send(`PUT ID: ${req.params.id}`);
+router.put('/:id', async (req, res) => {
+    let { name } = req.body
+    try {
+        let checklist = await Checklist.findByIdAndUpdate(req.params.id, {name}, {new: true})
+        //new serve pra devolver o objeto depois de atualizado
+        res.status(200).json(checklist)
+    } catch (error) {
+        res.status(422).json(error)
+    }
 })
 
-router.delete('/:id', (req, res) => {
-    console.log(req.params.id);
-    res.send(`delete ID: ${req.params.id}`);
+router.delete('/:id', async (req, res) => {
+    try {
+        let checklist = await Checklist.findByIdAndRemove(req.params.id)
+        res.status(200).json(checklist)
+    } catch (error) {
+        res.status(422).json(error)
+    }
 })
 
 
