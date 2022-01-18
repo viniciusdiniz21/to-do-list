@@ -1,5 +1,10 @@
+const exp = require('constants');
 const express = require('express');
+const path = require('path')
+
 const checklistRouter = require('./src/routes/checklist');
+const rootRouter = require('./src/routes/index');
+
 require('./config/database');
 
 const app = express();
@@ -9,7 +14,13 @@ const app = express();
 //deve processar esse json
 //deixa o json em req.body
 app.use(express.json())
+app.use(express.static(path.join(__dirname, 'public')))
+//path.join serve para mostrar para o express onde está o diretório
 
+app.set('views', path.join(__dirname, 'src/views'))
+app.set('view engine', 'ejs')
+
+app.use('/', rootRouter)
 app.use('/checklist', checklistRouter)
 
 
@@ -30,7 +41,5 @@ app.get('/json', (req, res) =>{
     res.json({title: 'Tarefa X', done: true});
 });
  */
-app.get('/', (req, res) =>{
-    res.send('<h1>Minha lista de Tarefas</h1>');
-});
+
 
